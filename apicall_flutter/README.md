@@ -1,16 +1,17 @@
 # apicall_flutter
 
-A new Flutter project.
+API Call Flutter project.
 
 ## Getting Started
+get data using API call
+use 3 library
+http :  for call the API
+flutter_easyloading : for show the loader
+connectivity : check internet connection
 
-This project is a starting point for a Flutter application.
+for use loader 
+First, initialize EasyLoading in your MaterialApp:
+file: main.dart 
+set builder field to initialize the loader library (line 21)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
