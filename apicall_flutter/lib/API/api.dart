@@ -1,17 +1,27 @@
+import 'package:http/http.dart' as http;
 
-import 'dart:convert';
-import 'package:http/http.dart';
-
+const baseUrl = "https://jsonplaceholder.typicode.com";
 class API{
-  final String postsURL = "https://jsonplaceholder.typicode.com/posts";
-
-  Future<String> getAPIData() async {
-    Response res = await get(postsURL);
-
-    if (res.statusCode == 200) {
-      return res.body;
+  //Todo Get API call to get the all users
+  static Future getUsers() async {
+    var url = baseUrl + "/users";
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      return response.body;
     } else {
-      throw "Unable to retrieve posts.";
+      throw "Unable to retrieve user.";
     }
+  }
+
+  //Todo Post API call to add user
+  static Future createUser(Map<String, String> headers,String json) async {
+    var url = baseUrl + "/posts";
+    var response = await http.post(url,headers: headers,body: json);
+    if (response.statusCode == 201) {
+      return response.body;
+    } else {
+      throw "Something Wrong";
+    }
+
   }
 }

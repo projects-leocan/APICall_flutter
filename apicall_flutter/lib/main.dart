@@ -35,6 +35,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String data='';
+  String responseString;
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -43,56 +46,101 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: ListView(
-          children: [
-            Column(
+
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RaisedButton(
-                    color: Colors.blue,
-                    child: const Text("API Call"),
-                    onPressed: () async {
-                      // Todo check internet connection
-                      bool internet = await checkInternetConnection();
-                      if(internet){
-                        //Todo show the loader
-                        EasyLoading.show(status: 'loading...');
+                Padding(
+                  padding:EdgeInsets.all(20),
+                  child: RaisedButton(
+                    child: Text("GET API CALL",),
+                    textColor: Colors.white,
+                    color: Colors.black54,
+                    elevation: 10.0,
+                    onPressed: (){
+                      getApiCall();
+                    },
 
-                        //Todo create API call to get data
-                        String response = await API().getAPIData();
-
-                        //Todo hide the loader when data get successfully
-                        EasyLoading.dismiss();
-
-                        //Todo show the data when data get from the API
-                        setState(() {
-                          data = response;
-                        });
-                      }
-                    }),
-                RaisedButton(
-                    color: Colors.blue,
-                    child: const Text("Clear"),
-                    onPressed: () async {
-                      setState(() {
-                        data = '';
-                      });
-                    }),
-                Text(data),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: RaisedButton(
+                    child: Text("POST API CALL"),
+                    textColor: Colors.white,
+                    color: Colors.black54,
+                    elevation: 10,
+                    onPressed: (){
+                      postApiCall();
+                    },
+                  ),
+                )
 
               ],
             ),
+
+            Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Text('$responseString',style: new TextStyle(fontSize: 16.0,color: Colors.black),),
+              ),
+            )
+
           ],
         ),
       ),
     );
   }
-  static Future<bool> checkInternetConnection() async {
+
+  //Todo check the internet connection
+  Future<bool> checkInternetConnection() async{
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+      // print("Connected to Mobile Network");
       return true;
     } else {
+      // print("Unable to connect. Please Check Internet Connection");
       return false;
+
     }
+  }
+
+  //Todo get api call
+  getApiCall() async {
+    bool isInternet = await checkInternetConnection();
+    if(isInternet){
+      EasyLoading.show(status: 'loading...');
+      var response = await API.getUsers();
+      EasyLoading.dismiss();
+      setState(() {
+        print(response);
+        responseString = response.toString();
+      });
+    }
+
+  }
+
+  //Todo post api call
+  postApiCall() async {
+    bool isInternet = await checkInternetConnection();
+    if(isInternet){
+      EasyLoading.show(status: 'loading...');
+
+      Map<String, String> headers = {"Content-type": "application/json"};
+      String json = '{"title": "Hello", "body": "body text", "userId": 1}';
+      var response = await API.createUser(headers,json);
+      EasyLoading.dismiss();
+      setState(() {
+        print(response);
+        responseString = response.toString();
+      });
+    }
+
   }
 }
