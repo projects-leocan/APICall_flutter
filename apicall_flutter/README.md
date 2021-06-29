@@ -5,10 +5,11 @@ API Call Flutter project.
 ## Getting Started
 get data & post data using API call
 use 3 library
+```
 http :  for call the API
 flutter_easyloading : for show the loader
 connectivity : check internet connection
-
+```
 for use loader 
 First, initialize EasyLoading in your MaterialApp:
 file: main.dart 
