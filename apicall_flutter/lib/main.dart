@@ -1,8 +1,13 @@
 // @dart=2.9
+import 'dart:convert';
+
 import 'package:apicall_flutter/API/api.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'Model/Post.dart';
+import 'Model/User.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String data='';
   String responseString;
+  List<User> userList = new List();
 
 
   @override
@@ -119,8 +125,21 @@ class _MyHomePageState extends State<MyHomePage> {
       var response = await API.getUsers();
       EasyLoading.dismiss();
       setState(() {
-        print(response);
+        // print(response);
         responseString = response.toString();
+
+        if(responseString.isNotEmpty){
+          //Todo jsonParsing (response get in String) (convert String -> json -> Model_List)
+          userList = List<User>.from(jsonDecode(response).map((i) => User.fromJson(i)));
+
+          print('-------------');
+          print("SIZE:  "+userList.length.toString());
+          print('-------------');
+          print(userList[0].toJson());
+          print(userList[1].toJson());
+          print(userList[2].toJson());
+          print(userList[3].toJson());
+        }
       });
     }
 
@@ -139,6 +158,13 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         print(response);
         responseString = response.toString();
+        if(responseString.isNotEmpty){
+          //Todo jsonParsing (response get in String) (convert String -> json -> Model_Class)
+          Post post = Post.fromJson(jsonDecode(response));
+
+          print('-------------');
+          print(post.toJson());
+        }
       });
     }
 

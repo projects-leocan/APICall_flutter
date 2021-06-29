@@ -9,7 +9,7 @@ class API{
     if (response.statusCode == 200) {
       return response.body;
     } else {
-      throw "Unable to retrieve user.";
+      throw "";
     }
   }
 
@@ -20,7 +20,7 @@ class API{
     if (response.statusCode == 201) {
       return response.body;
     } else {
-      throw "Something Wrong";
+      throw "";
     }
 
   }
